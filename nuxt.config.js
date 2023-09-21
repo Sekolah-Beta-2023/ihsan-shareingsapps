@@ -41,7 +41,7 @@ export default {
   googleFonts: {
     families: {
       Roboto: true,
-      Inter: [400, 700],
+      Inter: true,
       Cabin: true,
     },
   },

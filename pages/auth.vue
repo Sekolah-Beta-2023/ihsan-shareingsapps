@@ -1,13 +1,13 @@
 <template>
   <div
-    class="container-auth text-center border-black border-2 b-radius rounded-3xl"
+    class="container-auth md:w-[800px] w-fit text-center border-black border-2 b-radius rounded-3xl"
   >
     <div>
       <h1>Masuk</h1>
       <br /><br />
     </div>
     <div>
-      <form class="flex flex-col text-start gap-3" action="#">
+      <form class="flex flex-col gap-3 text-start w-full" action="/">
         <label for="username">Username :</label>
         <input
           type="text"
