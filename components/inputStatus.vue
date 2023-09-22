@@ -1,6 +1,6 @@
 <template>
   <section
-    class="md:w-[800px] w-auto text-center border-black border-2 b-radius rounded-3xl md:py-10 md:px-20 py-5 px-3"
+    class="w-auto text-center border-black border-2 b-radius rounded-3xl md:py-10 md:px-20 py-5 px-3 md:p-0 mx-2"
   >
     <form action="#" class="flex flex-col gap-5">
       <div class="text-center">
