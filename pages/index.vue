@@ -55,6 +55,12 @@
           <button
             type="button"
             class="p-2 mx-2 bg-[#d9d9d9] border border-black rounded-3xl"
+            @click="
+              $router.push({
+                path: `/detail-status/${post.id}`,
+                query: { post: post },
+              })
+            "
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -83,30 +89,35 @@ export default {
     return {
       posts: [
         {
+          id: 1,
           username: 'ikshan',
           subject: 'ikhsan',
           content: 'semangat san belajarnya hehe',
           comment: 'pasti dong yakali engga hehe',
         },
         {
+          id: 2,
           username: 'ikshan',
           subject: 'ikhsan',
           content: 'semangat san belajarnya hehe',
           comment: 'pasti dong yakali engga hehe',
         },
         {
+          id: 3,
           username: 'ikshan',
           subject: 'ikhsan',
           content: 'semangat san belajarnya hehe',
           comment: 'pasti dong yakali engga hehe',
         },
         {
+          id: 4,
           username: 'ikshan',
           subject: 'ikhsan',
           content: 'semangat san belajarnya hehe',
           comment: 'pasti dong yakali engga hehe',
         },
         {
+          id: 5,
           username: 'ikshan',
           subject: 'ikhsan',
           content: 'semangat san belajarnya hehe',
