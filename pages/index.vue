@@ -30,7 +30,7 @@
           <p class="text-sm">To : {{ post.subject }}</p>
         </div>
         <div class="my-3">
-          <h2>{{ post.content }}</h2>
+          <h3>{{ post.content }}</h3>
         </div>
         <div class="text-end">
           <button
@@ -43,7 +43,7 @@
               viewBox="0 0 24 24"
               stroke-width="1.5"
               stroke="currentColor"
-              class="w-6 h-6"
+              class="w-4 h-4"
             >
               <path
                 stroke-linecap="round"
@@ -57,8 +57,7 @@
             class="p-2 mx-2 bg-[#d9d9d9] border border-black rounded-3xl"
             @click="
               $router.push({
-                path: `/detail-status/${post.id}`,
-                query: { post: post },
+                path: `/post/${post.id}`,
               })
             "
           >
@@ -68,7 +67,7 @@
               viewBox="0 0 24 24"
               stroke-width="1.5"
               stroke="currentColor"
-              class="w-6 h-6"
+              class="w-4 h-4"
             >
               <path
                 stroke-linecap="round"
