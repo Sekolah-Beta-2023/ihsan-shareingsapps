@@ -50,6 +50,39 @@
           </svg>
         </button>
       </div>
+      clea
+    </div>
+    <div class="w-11/12 m-auto px-16 py-5">
+      <h2>Tulis Komentarmu</h2>
+    </div>
+    <div class="flex flex-col w-11/12 m-auto">
+      <div class="relative h-10 w-full min-w-[200px]">
+        <input
+          class="px-5 h-full w-full rounded-3xl border border-black bg-[#d9d9d9]"
+          placeholder="Sampaikan Kepada"
+        />
+      </div>
+      <div class="text-end">
+        <button
+          type="button"
+          class="p-2 mx-2 bg-[#d9d9d9] border border-black rounded-3xl"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-6 h-6"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"
+            />
+          </svg>
+        </button>
+      </div>
     </div>
     <div class="w-11/12 m-auto px-16 py-5">
       <h2>Balasan dari orang lain</h2>
