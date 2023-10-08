@@ -1,4 +1,6 @@
 <script>
+import { mapGetters, mapActions, mapState } from 'vuex'
+
 export default {
   layout: 'empty',
   data() {
@@ -8,33 +10,33 @@ export default {
         password: '',
         gender: '',
       },
-      messageErr: '',
     }
   },
-  methods: {
-    async register() {
-      const data = await this.$axios.post('/auth/register', this.registerData)
-      this.showNotification(data.data.message)
-      setTimeout(() => {
-        this.$router.push('/auth/login')
-      }, '2000')
-    },
-    showNotification(message) {
-      this.$notify({
-        title: 'Notifikasi',
-        text: message,
-        type: 'success',
-      })
-    },
+  computed: {
+    ...mapGetters(['isAuthenticated', 'loggedInUser']),
+    ...mapState(['userData']),
   },
-  handleFocus() {
-    if (this.messageErr !== '') this.messageErr = ''
+  methods: {
+    ...mapActions(['setUser']),
+    async register() {
+      try {
+        const data = await this.$axios.post('/auth/register', this.registerData)
+        this.$toast.success(data.data.message)
+        setTimeout(() => {
+          this.$router.push('/auth/login')
+        }, '2000')
+      } catch (error) {
+        this.$toast.error(error.message)
+      }
+      this.registerData.username = ''
+      this.registerData.password = ''
+      this.registerData.gender = ''
+    },
   },
 }
 </script>
 <template>
   <section class="container-auth md:w-[800px] w-full text-center px-5">
-    <notifications />
     <div>
       <img
         src="../../assets/image/shinchan login.gif"

@@ -1,3 +1,58 @@
+<script>
+import { mapGetters, mapActions, mapState } from 'vuex'
+export default {
+  data() {
+    return {
+      isTerbaruActive: true,
+      isPopulerActive: false,
+      posts: [],
+      originalPosts: [],
+    }
+  },
+
+  async fetch() {
+    try {
+      const data = await this.$axios.get('/post/getAllPost')
+      this.posts = data.data.post
+      this.originalPosts = data.data.post
+    } catch (error) {
+      throw new Error('gagal mengambil data')
+    }
+  },
+  computed: {
+    ...mapGetters(['isAuthenticated', 'loggedInUser']),
+    ...mapState(['userData']),
+  },
+  methods: {
+    ...mapActions(['setUser']),
+    async postPopuler() {
+      try {
+        const data = await this.$axios.get('/post/getPostByLikes')
+        this.posts = data.data.post
+      } catch (Error) {
+        throw new Error('gagal mengambil data')
+      }
+    },
+    toggleTerbaruButton() {
+      this.isTerbaruActive = true
+      this.posts = this.originalPosts
+      this.isPopulerActive = false
+    },
+    togglePopulerButton() {
+      this.isPopulerActive = true
+      this.postPopuler()
+      this.isTerbaruActive = false
+    },
+    postTerbaru() {
+      this.posts = this.originalPosts
+    },
+  },
+  mounted() {
+    console.log(this.$auth)
+  },
+}
+</script>
+
 <template>
   <div class="my-12">
     <FigurePage />
@@ -6,13 +61,24 @@
       <div class="text-center gap-4">
         <button
           type="button"
-          class="w-28 h-10 m-auto mr-4 bg-[#d9d9d9] border border-black rounded-3xl"
+          class="w-28 h-10 m-auto mr-4 border border-black rounded-3xl"
+          :class="{
+            'bg-[#d9d9d9]': !isTerbaruActive,
+            'bg-[your-active-color]': isTerbaruActive,
+          }"
+          @click="toggleTerbaruButton"
         >
+          {{ loggedInUser }}
           Terbaru
         </button>
         <button
           type="button"
-          class="w-28 h-10 m-auto ml-4 bg-[#d9d9d9] border border-black rounded-3xl"
+          class="w-28 h-10 m-auto ml-4 border border-black rounded-3xl"
+          :class="{
+            'bg-[#d9d9d9]': !isPopulerActive,
+            'bg-[your-active-color]': isPopulerActive,
+          }"
+          @click="togglePopulerButton"
         >
           Populer
         </button>
@@ -26,8 +92,8 @@
         class="flex flex-col w-11/12 m-auto px-10 py-5 border-black border-2 b-radius rounded-3xl"
       >
         <div class="flex gap-7">
-          <p class="text-sm">From : {{ post.username }}</p>
-          <p class="text-sm">To : {{ post.subject }}</p>
+          <p class="text-sm">From : {{ post.userId }}</p>
+          <p class="text-sm">To : {{ post.to }}</p>
         </div>
         <div class="my-3">
           <h3>{{ post.content }}</h3>
@@ -81,49 +147,3 @@
     </section>
   </div>
 </template>
-
-<script>
-export default {
-  data() {
-    return {
-      posts: [
-        {
-          id: 1,
-          username: 'ikshan',
-          subject: 'ikhsan',
-          content: 'semangat san belajarnya hehe',
-          comment: 'pasti dong yakali engga hehe',
-        },
-        {
-          id: 2,
-          username: 'ikshan',
-          subject: 'ikhsan',
-          content: 'semangat san belajarnya hehe',
-          comment: 'pasti dong yakali engga hehe',
-        },
-        {
-          id: 3,
-          username: 'ikshan',
-          subject: 'ikhsan',
-          content: 'semangat san belajarnya hehe',
-          comment: 'pasti dong yakali engga hehe',
-        },
-        {
-          id: 4,
-          username: 'ikshan',
-          subject: 'ikhsan',
-          content: 'semangat san belajarnya hehe',
-          comment: 'pasti dong yakali engga hehe',
-        },
-        {
-          id: 5,
-          username: 'ikshan',
-          subject: 'ikhsan',
-          content: 'semangat san belajarnya hehe',
-          comment: 'pasti dong yakali engga hehe',
-        },
-      ],
-    }
-  },
-}
-</script>

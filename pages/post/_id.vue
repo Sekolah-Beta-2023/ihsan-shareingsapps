@@ -1,3 +1,27 @@
+<script>
+export default {
+  data() {
+    return {
+      posts: {
+        id: this.$route.params.id,
+        content: '',
+        to: '',
+        comments: [],
+      },
+    }
+  },
+  async fetch() {
+    const data = await this.$axios.get('/post/getPostById/' + this.posts.id)
+    this.posts.content = data.data.data.content
+    this.posts.to = data.data.data.to
+    this.posts.comments = data.data.data.comments
+  },
+  mounted() {
+    console.log(this.$auth)
+  },
+}
+</script>
+
 <template>
   <section class="flex flex-col gap-7">
     <div
@@ -5,7 +29,7 @@
     >
       <div class="flex gap-7">
         <p class="text-sm">From : {{ posts.username }}</p>
-        <p class="text-sm">To : {{ posts.subject }}</p>
+        <p class="text-sm">To : {{ posts.to }}</p>
       </div>
       <div class="my-3">
         <h3>{{ posts.content }}</h3>
@@ -50,17 +74,16 @@
           </svg>
         </button>
       </div>
-      clea
     </div>
     <div class="w-11/12 m-auto px-16 py-5">
       <h2>Tulis Komentarmu</h2>
     </div>
-    <div class="flex flex-col w-11/12 m-auto">
-      <div class="relative h-10 w-full min-w-[200px]">
-        <input
-          class="px-5 h-full w-full rounded-3xl border border-black bg-[#d9d9d9]"
-          placeholder="Sampaikan Kepada"
-        />
+    <form class="flex flex-col w-11/12 m-auto px-16 py-5">
+      <div class="relative w-full min-w-[200px]">
+        <textarea
+          class="p-5 h-full min-h-[150px] w-full rounded-3xl border border-black bg-[#d9d9d9]"
+          placeholder=" "
+        ></textarea>
       </div>
       <div class="text-end">
         <button
@@ -83,12 +106,12 @@
           </svg>
         </button>
       </div>
-    </div>
+    </form>
     <div class="w-11/12 m-auto px-16 py-5">
       <h2>Balasan dari orang lain</h2>
     </div>
     <div
-      v-for="comment in posts.comment"
+      v-for="comment in posts.comments"
       :key="comment.id"
       class="flex flex-col w-11/12 m-auto px-10 py-5 border-black border-2 b-radius rounded-3xl"
     >
@@ -122,40 +145,3 @@
     </div>
   </section>
 </template>
-
-<script>
-export default {
-  data() {
-    return {
-      posts: {
-        id: 1,
-        username: 'ikshan',
-        subject: 'ikhsan',
-        content: 'semangat san belajarnya hehe',
-        comment: [
-          {
-            id: 1,
-            username: 'isan',
-            comment: 'ya pasti lah masa engga',
-          },
-          {
-            id: 1,
-            username: 'isan',
-            comment: 'ya pasti lah masa engga',
-          },
-          {
-            id: 1,
-            username: 'isan',
-            comment: 'ya pasti lah masa engga',
-          },
-          {
-            id: 1,
-            username: 'isan',
-            comment: 'ya pasti lah masa engga',
-          },
-        ],
-      },
-    }
-  },
-}
-</script>
