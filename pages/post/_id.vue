@@ -1,4 +1,6 @@
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   data() {
     return {
@@ -8,16 +10,35 @@ export default {
         to: '',
         comments: [],
       },
+      comments: {
+        comment: '',
+      },
     }
   },
   async fetch() {
     const data = await this.$axios.get('/post/getPostById/' + this.posts.id)
     this.posts.content = data.data.data.content
+    this.posts.username = data.data.data.users.username
     this.posts.to = data.data.data.to
     this.posts.comments = data.data.data.comments
   },
-  mounted() {
-    console.log(this.$auth)
+  computed: {
+    ...mapGetters(['isAuthenticated', 'loggedInUser']),
+  },
+  methods: {
+    async createComment() {
+      try {
+        const data = await this.$axios.post(
+          '/comment/createComment/' + this.$route.params.id,
+          this.comments
+        )
+        this.$toast.success(data.data.message)
+        location.reload()
+      } catch (error) {
+        this.$toast.error(error.response.data.message)
+      }
+      this.comments.comment = ''
+    },
   },
 }
 </script>
@@ -78,16 +99,20 @@ export default {
     <div class="w-11/12 m-auto px-16 py-5">
       <h2>Tulis Komentarmu</h2>
     </div>
-    <form class="flex flex-col w-11/12 m-auto px-16 py-5">
+    <form
+      class="flex flex-col w-11/12 m-auto px-16 py-5"
+      @submit.prevent="createComment"
+    >
       <div class="relative w-full min-w-[200px]">
         <textarea
+          v-model="comments.comment"
           class="p-5 h-full min-h-[150px] w-full rounded-3xl border border-black bg-[#d9d9d9]"
           placeholder=" "
         ></textarea>
       </div>
       <div class="text-end">
         <button
-          type="button"
+          type="submit"
           class="p-2 mx-2 bg-[#d9d9d9] border border-black rounded-3xl"
         >
           <svg
@@ -116,13 +141,14 @@ export default {
       class="flex flex-col w-11/12 m-auto px-10 py-5 border-black border-2 b-radius rounded-3xl"
     >
       <div class="flex">
-        <p class="text-sm">From : {{ comment.username }}</p>
+        <p class="text-sm">From : {{ comment.user.username }}</p>
       </div>
       <div class="my-1">
         <h3>{{ comment.comment }}</h3>
       </div>
       <div class="text-end">
         <button
+          v-if="comment.userId == loggedInUser.id"
           type="button"
           class="p-2 mx-2 bg-[#d9d9d9] border border-black rounded-3xl"
         >

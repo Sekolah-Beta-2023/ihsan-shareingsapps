@@ -1,5 +1,5 @@
 <script>
-import { mapGetters, mapActions, mapState } from 'vuex'
+import { mapGetters } from 'vuex'
 
 export default {
   layout: 'empty',
@@ -14,19 +14,18 @@ export default {
   },
   computed: {
     ...mapGetters(['isAuthenticated', 'loggedInUser']),
-    ...mapState(['userData']),
   },
   methods: {
-    ...mapActions(['setUser']),
     async register() {
       try {
-        const data = await this.$axios.post('/auth/register', this.registerData)
-        this.$toast.success(data.data.message)
+        await this.$axios.post('/auth/register', this.registerData)
+        this.$toast.success('berhasil registrasi akun')
         setTimeout(() => {
           this.$router.push('/auth/login')
         }, '2000')
       } catch (error) {
-        this.$toast.error(error.message)
+        console.log(error.response)
+        this.$toast.error(error.response.data.message)
       }
       this.registerData.username = ''
       this.registerData.password = ''

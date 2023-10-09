@@ -1,5 +1,5 @@
 <script>
-import { mapGetters, mapActions, mapState } from 'vuex'
+import { mapGetters } from 'vuex'
 export default {
   data() {
     return {
@@ -21,10 +21,8 @@ export default {
   },
   computed: {
     ...mapGetters(['isAuthenticated', 'loggedInUser']),
-    ...mapState(['userData']),
   },
   methods: {
-    ...mapActions(['setUser']),
     async postPopuler() {
       try {
         const data = await this.$axios.get('/post/getPostByLikes')
@@ -47,9 +45,9 @@ export default {
       this.posts = this.originalPosts
     },
   },
-  mounted() {
-    console.log(this.$auth)
-  },
+  // mounted() {
+  //   console.log('==>', this.loggedInUser)
+  // },
 }
 </script>
 
@@ -68,7 +66,6 @@ export default {
           }"
           @click="toggleTerbaruButton"
         >
-          {{ loggedInUser }}
           Terbaru
         </button>
         <button
@@ -92,7 +89,7 @@ export default {
         class="flex flex-col w-11/12 m-auto px-10 py-5 border-black border-2 b-radius rounded-3xl"
       >
         <div class="flex gap-7">
-          <p class="text-sm">From : {{ post.userId }}</p>
+          <p class="text-sm">From : {{ post.users.username }}</p>
           <p class="text-sm">To : {{ post.to }}</p>
         </div>
         <div class="my-3">

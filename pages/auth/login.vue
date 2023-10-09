@@ -1,5 +1,5 @@
 <script>
-import { mapActions, mapState } from 'vuex'
+// import { mapActions, mapState } from 'vuex'
 
 export default {
   layout: 'empty',
@@ -12,22 +12,17 @@ export default {
       messageErr: '',
     }
   },
-  computed: {
-    ...mapState(['userData']),
-  },
   methods: {
-    ...mapActions(['setUser']),
-
     async login() {
       try {
+        // await this.$axios.post('/auth/login', this.inputValue)
         await this.$auth.loginWith('local', {
           data: this.inputValue,
         })
         this.$toast.success('Selamat, anda sukses login.')
-        this.$router.go('/')
-      } catch (e) {
-        this.messageErr = e
-        this.$toast.error(this.messageErr)
+        // this.$router.push('/')
+      } catch (error) {
+        this.$toast.error(error.response.data.message)
       }
     },
   },
