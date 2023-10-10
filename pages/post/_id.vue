@@ -47,11 +47,19 @@ export default {
     async deleteComment(id) {
       try {
         const data = await this.$axios.delete(
-          '/comment/deleteCommentById/' + id,
-          this.comments
+          '/comment/deleteCommentById/' + id
         )
         this.$toast.success(data.data.message)
         location.reload()
+      } catch (error) {
+        this.$toast.error(error.response.data.message)
+      }
+    },
+    async deletePost(id) {
+      try {
+        const data = await this.$axios.delete('/post/deletePostById/' + id)
+        this.$toast.success(data.data.message)
+        this.$router.push('/')
       } catch (error) {
         this.$toast.error(error.response.data.message)
       }
@@ -84,10 +92,23 @@ export default {
         }
       })
     },
+    isDeletePost(id) {
+      this.$swal({
+        title: 'Delete Post',
+        text: 'Yakin ingin menghapus Post ini',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Ya',
+        cancelButtonText: 'Batal',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.deletePost(id)
+        }
+      })
+    },
   },
   // mounted() {
-  //   console.log('==>', this.posts.userId)
-  //   console.log('==>', this.loggedInUser)
+  //   console.log('==>', this.posts.id)
   // },
 }
 </script>
@@ -150,6 +171,7 @@ export default {
           v-if="loggedInUser.id === posts.userId"
           type="button"
           class="p-2 mx-2 bg-[#d9d9d9] border border-black rounded-3xl"
+          @click="isDeletePost(posts.id)"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

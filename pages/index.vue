@@ -82,7 +82,7 @@ export default {
         </button>
       </div>
       <div class="text-center">
-        <h2>Cerita dari orang orang</h2>
+        <h2>Pesan dari orang orang</h2>
       </div>
       <div
         v-for="(post, index) in posts"
