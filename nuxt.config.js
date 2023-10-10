@@ -1,5 +1,5 @@
 export default {
-  mode: 'spa',
+  // mode: 'spa',
   head: {
     title: 'Shereings',
     htmlAttrs: {
