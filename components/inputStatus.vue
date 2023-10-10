@@ -19,6 +19,9 @@ export default {
   methods: {
     async createPost() {
       try {
+        if (!this.isAuthenticated) {
+          return this.isLogin()
+        }
         const data = await this.$axios.post('/post/createPost', this.post)
         this.posts = data.data.post
         location.reload()
@@ -26,6 +29,20 @@ export default {
       } catch (error) {
         this.$toast.success(error.response.data.message)
       }
+    },
+    isLogin() {
+      this.$swal({
+        title: 'Belum Login',
+        text: 'Mohon Login terlebih dahulu',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Ya, Login',
+        cancelButtonText: 'Batal',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.$router.push('/auth/login')
+        }
+      })
     },
   },
 }

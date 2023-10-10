@@ -15,12 +15,11 @@ export default {
   methods: {
     async login() {
       try {
-        // await this.$axios.post('/auth/login', this.inputValue)
         await this.$auth.loginWith('local', {
           data: this.inputValue,
         })
         this.$toast.success('Selamat, anda sukses login.')
-        // this.$router.push('/')
+        this.$router.push('/')
       } catch (error) {
         this.$toast.error(error.response.data.message)
       }
@@ -31,6 +30,7 @@ export default {
 
 <template>
   <section class="container-auth md:w-[800px] w-full text-center px-5">
+    <navBar />
     <div>
       <img src="../../assets/image/shinchan login.gif" alt="" class="m-auto" />
       <h1>Login</h1>
@@ -61,6 +61,13 @@ export default {
           Submit
         </button>
       </form>
+      <br />
+      <p>
+        Belum punya akun ?
+        <nuxt-link to="/auth/register" class="text-blue-400"
+          >Register</nuxt-link
+        >
+      </p>
     </div>
   </section>
 </template>

@@ -7,6 +7,7 @@ export default {
       posts: {
         id: this.$route.params.id,
         content: '',
+        userId: '',
         to: '',
         comments: [],
       },
@@ -18,8 +19,9 @@ export default {
   async fetch() {
     const data = await this.$axios.get('/post/getPostById/' + this.posts.id)
     this.posts.content = data.data.data.content
-    this.posts.username = data.data.data.users.username
     this.posts.to = data.data.data.to
+    this.posts.userId = data.data.data.userId
+    this.posts.username = data.data.data.users.username
     this.posts.comments = data.data.data.comments
   },
   computed: {
@@ -28,6 +30,9 @@ export default {
   methods: {
     async createComment() {
       try {
+        if (!this.isAuthenticated) {
+          return this.isLogin()
+        }
         const data = await this.$axios.post(
           '/comment/createComment/' + this.$route.params.id,
           this.comments
@@ -39,12 +44,78 @@ export default {
       }
       this.comments.comment = ''
     },
+    async deleteComment(id) {
+      try {
+        const data = await this.$axios.delete(
+          '/comment/deleteCommentById/' + id,
+          this.comments
+        )
+        this.$toast.success(data.data.message)
+        location.reload()
+      } catch (error) {
+        this.$toast.error(error.response.data.message)
+      }
+    },
+    isLogin() {
+      this.$swal({
+        title: 'Belum Login',
+        text: 'Mohon Login terlebih dahulu',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Ya, Login',
+        cancelButtonText: 'Batal',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.$router.push('/auth/login')
+        }
+      })
+    },
+    isDeleteComment(id) {
+      this.$swal({
+        title: 'Delete Comment',
+        text: 'Yakin ingin menghapus komen ini',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Ya',
+        cancelButtonText: 'Batal',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.deleteComment(id)
+        }
+      })
+    },
   },
+  // mounted() {
+  //   console.log('==>', this.posts.userId)
+  //   console.log('==>', this.loggedInUser)
+  // },
 }
 </script>
 
 <template>
   <section class="flex flex-col gap-7">
+    <div class="fixed top-10 right-10 flex flex-col gap-4">
+      <button
+        type="button"
+        class="w-auto m-auto p-2 border border-black rounded-xl"
+        @click="$router.go(-1)"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="28"
+          height="28"
+          fill="currentColor"
+          class="bi bi-arrow-90deg-left"
+          viewBox="0 0 16 16"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M1.146 4.854a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 4H12.5A2.5 2.5 0 0 1 15 6.5v8a.5.5 0 0 1-1 0v-8A1.5 1.5 0 0 0 12.5 5H2.707l3.147 3.146a.5.5 0 1 1-.708.708l-4-4z"
+          />
+        </svg>
+      </button>
+    </div>
+
     <div
       class="flex flex-col w-11/12 m-auto px-10 py-5 border-black border-2 b-radius rounded-3xl"
     >
@@ -76,6 +147,7 @@ export default {
           </svg>
         </button>
         <button
+          v-if="loggedInUser.id === posts.userId"
           type="button"
           class="p-2 mx-2 bg-[#d9d9d9] border border-black rounded-3xl"
         >
@@ -151,6 +223,7 @@ export default {
           v-if="comment.userId == loggedInUser.id"
           type="button"
           class="p-2 mx-2 bg-[#d9d9d9] border border-black rounded-3xl"
+          @click="isDeleteComment(comment.id)"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

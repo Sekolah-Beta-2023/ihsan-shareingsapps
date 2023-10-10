@@ -53,6 +53,7 @@ export default {
 
 <template>
   <div class="my-12">
+    <navBar />
     <FigurePage />
     <InputStatus />
     <section class="flex flex-col gap-7">

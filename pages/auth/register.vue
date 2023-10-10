@@ -24,7 +24,6 @@ export default {
           this.$router.push('/auth/login')
         }, '2000')
       } catch (error) {
-        console.log(error.response)
         this.$toast.error(error.response.data.message)
       }
       this.registerData.username = ''
@@ -36,6 +35,7 @@ export default {
 </script>
 <template>
   <section class="container-auth md:w-[800px] w-full text-center px-5">
+    <navBar />
     <div>
       <img
         src="../../assets/image/shinchan login.gif"
