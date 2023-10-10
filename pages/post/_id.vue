@@ -107,9 +107,6 @@ export default {
       })
     },
   },
-  // mounted() {
-  //   console.log('==>', this.posts.id)
-  // },
 }
 </script>
 
@@ -168,7 +165,7 @@ export default {
           </svg>
         </button>
         <button
-          v-if="loggedInUser.id === posts.userId"
+          v-if="loggedInUser && loggedInUser.id === posts.userId"
           type="button"
           class="p-2 mx-2 bg-[#d9d9d9] border border-black rounded-3xl"
           @click="isDeletePost(posts.id)"
@@ -242,7 +239,7 @@ export default {
       </div>
       <div class="text-end">
         <button
-          v-if="comment.userId == loggedInUser.id"
+          v-if="loggedInUser && comment.userId === loggedInUser.id"
           type="button"
           class="p-2 mx-2 bg-[#d9d9d9] border border-black rounded-3xl"
           @click="isDeleteComment(comment.id)"
