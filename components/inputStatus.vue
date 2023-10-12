@@ -29,12 +29,13 @@ export default {
           return this.isLogin()
         }
         const data = await this.$axios.post('/post/createPost', this.post)
-        this.posts = data.data.post
         this.changeData()
         this.$toast.success(data.data.message)
       } catch (error) {
         this.$toast.success(error.response.data.message)
       }
+      this.post.content = ''
+      this.post.to = ''
     },
     isLogin() {
       this.$swal({
