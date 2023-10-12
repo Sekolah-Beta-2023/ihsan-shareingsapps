@@ -2,6 +2,12 @@
 import { mapGetters } from 'vuex'
 
 export default {
+  props: {
+    changeData: {
+      default: Function,
+      type: Function,
+    },
+  },
   data() {
     return {
       layout: 'empty',
@@ -24,7 +30,7 @@ export default {
         }
         const data = await this.$axios.post('/post/createPost', this.post)
         this.posts = data.data.post
-        location.reload()
+        this.changeData()
         this.$toast.success(data.data.message)
       } catch (error) {
         this.$toast.success(error.response.data.message)
