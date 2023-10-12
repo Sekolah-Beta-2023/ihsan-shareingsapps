@@ -28,6 +28,14 @@ export default {
     ...mapGetters(['isAuthenticated', 'loggedInUser']),
   },
   methods: {
+    async changeData() {
+      const data = await this.$axios.get('/post/getPostById/' + this.posts.id)
+      this.posts.content = data.data.data.content
+      this.posts.to = data.data.data.to
+      this.posts.userId = data.data.data.userId
+      this.posts.username = data.data.data.users.username
+      this.posts.comments = data.data.data.comments
+    },
     async createComment() {
       try {
         if (!this.isAuthenticated) {
@@ -37,8 +45,8 @@ export default {
           '/comment/createComment/' + this.$route.params.id,
           this.comments
         )
+        this.changeData()
         this.$toast.success(data.data.message)
-        location.reload()
       } catch (error) {
         this.$toast.error(error.response.data.message)
       }
@@ -50,7 +58,7 @@ export default {
           '/comment/deleteCommentById/' + id
         )
         this.$toast.success(data.data.message)
-        location.reload()
+        this.changeData()
       } catch (error) {
         this.$toast.error(error.response.data.message)
       }
@@ -112,7 +120,9 @@ export default {
 
 <template>
   <section class="flex flex-col gap-7">
-    <div class="fixed top-10 right-10 flex flex-col gap-4">
+    <div
+      class="fixed md:top-10 md:right-10 top-5 right-5 z-10 flex flex-col gap-4"
+    >
       <button
         type="button"
         class="w-auto m-auto p-2 border border-black rounded-xl"

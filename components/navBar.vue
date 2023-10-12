@@ -36,20 +36,9 @@ export default {
 }
 </script>
 <template>
-  <nav class="fixed top-10 right-10 flex flex-col gap-4">
-    <!-- <div class="relative group">
-      <button
-        class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600"
-      >
-        Tombol
-      </button>
-      <div
-        class="hidden absolute bg-gray-100 p-2 rounded-lg top-0 left-0 mt-10 group-hover:block"
-      >
-        Ini adalah teks tambahan
-      </div>
-    </div> -->
-
+  <nav
+    class="fixed md:top-10 md:right-10 top-5 right-5 flex flex-col gap-4 z-10"
+  >
     <button
       type="button"
       class="w-auto m-auto p-2 border border-black rounded-xl"

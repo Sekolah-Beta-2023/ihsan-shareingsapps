@@ -30,6 +30,15 @@ export default {
         throw new Error('gagal mengambil data')
       }
     },
+    async changeData() {
+      try {
+        const data = await this.$axios.get('/post/getAllPost')
+        this.posts = data.data.post
+        this.originalPosts = data.data.post
+      } catch (error) {
+        throw new Error('gagal mengambil data')
+      }
+    },
     toggleTerbaruButton() {
       this.isTerbaruActive = true
       this.posts = this.originalPosts
@@ -51,7 +60,7 @@ export default {
   <div class="my-12">
     <navBar />
     <FigurePage />
-    <InputStatus />
+    <InputStatus :change-data="changeData" />
     <section class="flex flex-col gap-7">
       <div class="text-center gap-4">
         <button
